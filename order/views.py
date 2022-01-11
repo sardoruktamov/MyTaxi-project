@@ -1,9 +1,12 @@
+from django.db.models.query import QuerySet
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from rest_framework import status
+from rest_framework import serializers, status
 from .models import Order, AcceptOrder, OrderStatus
 from client.models import Client
 from driver.models import Driver
+from .serializers import OrderListSerializer
+from rest_framework.generics import ListAPIView
 
 #client tomonidan driver zakas qilish
 class CreateOrderAPIView(APIView):
@@ -25,6 +28,14 @@ class AcceptOrderAPIView(APIView):
         get_driver = Driver.objects.get(id=driver)
         get_client = Client.objects.get(id=client)
         get_status = OrderStatus.objects.get(id=status)
-        accepted_order = AcceptOrder.objects.create(driver=get_driver, client=get_client, status=get_status)
-        return Response("Order is accepted", status=status.HTTP_201_CREATED)
 
+        print(get_driver)
+        print(get_client)
+        print(get_status)
+        accepted_order = AcceptOrder.objects.create(driver=get_driver, client=get_client, status=get_status)
+        
+        return Response("AcceptOrder is accepted")
+
+class OrderListAPIView(ListAPIView):
+    queryset = Order.objects.all()
+    serializer_class = OrderListSerializer
