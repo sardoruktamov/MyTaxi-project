@@ -21,3 +21,9 @@ class OrderUpdateSerializer(ModelSerializer):
     class Meta:
         model = AcceptOrder
         fields = ['status']
+
+
+class AcceptOrderCreateSerializer(ModelSerializer):
+    class Meta:
+        model = AcceptOrder
+        fields = '__all__'
