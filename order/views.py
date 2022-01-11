@@ -5,8 +5,8 @@ from rest_framework import serializers, status
 from .models import Order, AcceptOrder, OrderStatus
 from client.models import Client
 from driver.models import Driver
-from .serializers import OrderListSerializer
-from rest_framework.generics import ListAPIView
+from .serializers import OrderListSerializer, OrderUpdateSerializer
+from rest_framework.generics import ListAPIView, RetrieveUpdateAPIView
 
 #client tomonidan driver zakas qilish
 class CreateOrderAPIView(APIView):
@@ -38,4 +38,8 @@ class AcceptOrderAPIView(APIView):
 
 class OrderListAPIView(ListAPIView):
     queryset = Order.objects.all()
+    serializer_class = OrderListSerializer
+
+class OrderStatusUpdateAPIView(RetrieveUpdateAPIView):
+    queryset = AcceptOrder.objects.all()
     serializer_class = OrderListSerializer
