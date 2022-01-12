@@ -14,6 +14,9 @@ class Order(models.Model):
 class OrderStatus(models.Model):
     status = models.CharField(max_length=200)
 
+    def __str__(self):
+        return self.status
+
 class AcceptOrder(models.Model):
     driver = models.ForeignKey(Driver, on_delete=models.CASCADE)
     client = models.ForeignKey(Client, on_delete=models.CASCADE)
@@ -23,3 +26,5 @@ class AcceptOrder(models.Model):
 
     def __str__(self):
         return f"{self.client} >> {self.driver}  -  {self.status}"
+
+

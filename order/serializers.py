@@ -2,8 +2,12 @@ from django.db import models
 from django.db.models import fields
 from rest_framework.fields import ReadOnlyField
 from rest_framework.serializers import ModelSerializer
-from .models import Order, AcceptOrder
+from .models import Order, AcceptOrder, OrderStatus
 from client.models import Client
+from rest_framework.response import Response
+from rest_framework import validators
+from django.shortcuts import get_object_or_404
+
 
 class GetCustomerSerializer(ModelSerializer):
     class Meta:
@@ -22,6 +26,16 @@ class OrderUpdateSerializer(ModelSerializer):
         model = AcceptOrder
         fields = ['status']
 
+    def update(self, instance, validated_data):
+        status = validated_data['status']
+        accepted_status = get_object_or_404(OrderStatus, status="accepted")
+        
+        cancelled_status = get_object_or_404(OrderStatus, status="cancelled")
+        
+        if instance.status == accepted_status and status == cancelled_status:
+            raise validators.ValidationError({'message':"Qabul qilingan zakasni bekor qilib bolmaydi!!!"})
+        
+        return super().update(instance, validated_data)
 
 class AcceptOrderCreateSerializer(ModelSerializer):
     class Meta:
