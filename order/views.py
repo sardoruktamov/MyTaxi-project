@@ -47,14 +47,12 @@ class FilterOrderAPIView(generics.ListAPIView):
     def filter_queryset(self, queryset):
         client = get_object_or_404(Client,id=self.kwargs['pk'])
         if 'from' in self.request.GET and 'to' in self.request.GET:
-            from1 = self.request.GET['from']
-            to1 = self.request.GET['to']
+            from_str = self.request.GET['from']                 #  2022-01-12
+            to_str = self.request.GET['to']
 
-            from2 = (str(from1).split('/'))  #['5', '01', '2022']
-            to2 = (str(to1).split('/'))
+            from_date =  datetime.datetime.strptime(from_str, "%Y-%m-%d")  #strint tipli ma'lumotni date tipiga aylantirish
+            to_date = datetime.datetime.strptime(to_str, "%Y-%m-%d")
 
-            from_date = datetime.datetime(int(from2[2]),int(from2[1]),int(from2[0]))  #2022-01-05 00:00:00
-            to_date = datetime.datetime(int(to2[2]),int(to2[1]),int(to2[0]))
             queryset = AcceptOrder.objects.filter(client=client,update_at__range=(from_date, to_date))
             return super().filter_queryset(queryset)
         else:
@@ -69,3 +67,12 @@ class OrderListAPIView(ListAPIView):
 class OrderStatusUpdateAPIView(RetrieveUpdateAPIView):
     queryset = AcceptOrder.objects.all()
     serializer_class = OrderUpdateSerializer
+
+    def put(self, request, *args, **kwargs):
+            
+        # accept_order = get_object_or_404(self.queryset,id=self.kwargs['id'])     
+        accept_order = get_object_or_404(self.queryset,id=int(request.POST['id']))     
+        status = get_object_or_404(OrderStatus,id=int(request.POST['id']))
+        print(accept_order,"aaaaaccccccccccc")     
+        print(status,"statussssssssssssssssss")     
+        return super().get_queryset()
