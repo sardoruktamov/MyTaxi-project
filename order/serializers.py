@@ -28,12 +28,11 @@ class OrderUpdateSerializer(ModelSerializer):
 
     def update(self, instance, validated_data):
         status = validated_data['status']
-        accepted_status = get_object_or_404(OrderStatus, status="accepted")
-        
+        accepted_status = get_object_or_404(OrderStatus, status="accepted")        
         cancelled_status = get_object_or_404(OrderStatus, status="cancelled")
         
         if instance.status == accepted_status and status == cancelled_status:
-            raise validators.ValidationError({'message':"Qabul qilingan zakasni bekor qilib bolmaydi!!!"})
+            raise validators.ValidationError({'message':"Accepted bookings cannot be canceled !!!"})
         
         return super().update(instance, validated_data)
 
