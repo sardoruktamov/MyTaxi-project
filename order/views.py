@@ -40,6 +40,7 @@ class AcceptOrderAPIView(generics.CreateAPIView):
         
         return Response({"status":"create accept"})
 
+#GET- filter by client
 class FilterOrderAPIView(generics.ListAPIView):
     queryset = AcceptOrder.objects.all()
     serializer_class = OrderListSerializer
@@ -59,20 +60,13 @@ class FilterOrderAPIView(generics.ListAPIView):
             queryset = Order.objects.filter(client=client)
             return super().filter_queryset(queryset)
 
-
+#GET-order
 class OrderListAPIView(ListAPIView):
     queryset = Order.objects.all()
     serializer_class = OrderListSerializer
 
-class OrderStatusUpdateAPIView(RetrieveUpdateAPIView):
+#PUT-status
+class OrderStatusUpdateAPIView(generics.UpdateAPIView):
     queryset = AcceptOrder.objects.all()
     serializer_class = OrderUpdateSerializer
 
-    def put(self, request, *args, **kwargs):
-            
-        # accept_order = get_object_or_404(self.queryset,id=self.kwargs['id'])     
-        accept_order = get_object_or_404(self.queryset,id=int(request.POST['id']))     
-        status = get_object_or_404(OrderStatus,id=int(request.POST['id']))
-        print(accept_order,"aaaaaccccccccccc")     
-        print(status,"statussssssssssssssssss")     
-        return super().get_queryset()
