@@ -44,7 +44,8 @@ INSTALLED_APPS = [
     'order',
 
     #other apps
-    'rest_framework'
+    'rest_framework',
+    'drf_yasg',
 ]
 
 MIDDLEWARE = [
