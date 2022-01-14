@@ -1,6 +1,7 @@
 from django.urls import path
-from .views import CreateDriverAPIView
+from .views import DrivetListCreateAPIView, RetrieveDriverAPIView
 
 urlpatterns = [
-    path('create/', CreateDriverAPIView.as_view()),
+    path('create/', DrivetListCreateAPIView.as_view()),
+    path('create/<int:pk>', RetrieveDriverAPIView.as_view()),
 ]
