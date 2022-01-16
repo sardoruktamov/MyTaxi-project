@@ -10,7 +10,7 @@
   
   2.2- http://127.0.0.1:8000/api/v1/client/create/
 
-3 - 4 different order statuses are created (create, cancelled, accepted, finish)  !!!Do not create statuses with other names.
+3 - 4 different order statuses are created (create, cancel, accept, finish)  !!!Do not create statuses with other names.
 
 4 - the driver is ordered by the client
 
